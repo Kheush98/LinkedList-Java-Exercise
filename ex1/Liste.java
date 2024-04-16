@@ -2,9 +2,8 @@
  * Classe représentant une liste chaînée de mots.
  */
 class Liste {
-    Maillon tete; // Référence vers le premier maillon de la liste
+    Maillon tete; 
 
-    // Constructeur pour initialiser une liste chaînée vide
     Liste() {
         this.tete = null;
     }
