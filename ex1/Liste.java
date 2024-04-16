@@ -1,53 +1,90 @@
-public class Liste {
-    Maillon head;
+/**
+ * Classe représentant une liste chaînée de mots.
+ */
+class Liste {
+    Maillon tete; // Référence vers le premier maillon de la liste
 
-    public Liste() {
-        this.head = null;
+    // Constructeur pour initialiser une liste chaînée vide
+    Liste() {
+        this.tete = null;
     }
 
-    public Liste ajouteDebut(String mot) {
-        Maillon newMaillon = new Maillon(mot);
-
-        newMaillon.suivant = this.head;
-        this.head = newMaillon;
-
-        return this;
+    /**
+     * Ajoute un nouveau maillon contenant le mot au début de la liste.
+     * @param mot Le caractère représentant le mot à ajouter.
+     */
+    void ajouteDebut(char mot) {
+        Maillon nouveau = new Maillon(mot);
+        nouveau.suiv = this.tete;
+        this.tete = nouveau;
     }
 
-    public Liste ajoutFin(String mot) {
-        Maillon newMaillon = new Maillon(mot);
-        Maillon tmp = this.head;
-
-        while (tmp.suivant != null) {
-            tmp = tmp.suivant;
+    /**
+     * Ajoute un nouveau maillon contenant le mot à la fin de la liste.
+     * @param mot Le caractère représentant le mot à ajouter.
+     */
+    void ajouteFin(char mot) {
+        Maillon nouveau = new Maillon(mot);
+        if (this.tete == null) {
+            this.tete = nouveau;
+            return;
         }
-
-        tmp.suivant = newMaillon;
-        return this;
+        Maillon dernier = this.tete;
+        while (dernier.suiv != null) {
+            dernier = dernier.suiv;
+        }
+        dernier.suiv = nouveau;
     }
 
-    public Liste supprimer(String mot) {
-        Maillon tmp = this.head;
-        Maillon precedent = null;
-
-        while (tmp != null) {
-            if (tmp.mot.equals(mot)) {
-                if (precedent == null) {
-                    this.head = tmp.suivant;
-                } else {
-                    precedent.suivant = tmp.suivant;
-                }
-
-                return this;
+    /**
+     * Supprime les doublons consécutifs dans la liste.
+     */
+    void purifie() {
+        Maillon courant = this.tete;
+        while (courant != null && courant.suiv != null) {
+            Maillon suivant = courant.suiv;
+            if (courant.mot == suivant.mot) {
+                courant.suiv = suivant.suiv;
+            } else {
+                courant = courant.suiv;
             }
-            tmp = tmp.suivant;
         }
-
-        System.out.println("Le mot n'est pas trouvé");
-        return this;
     }
 
-    void premiers(int n) {
-        
+    /**
+     * Affiche les premiers n mots de la liste.
+     * @param n Le nombre de mots à afficher.
+     */
+    void afficherPremiers(int n) {
+        System.out.println("Nous allons afficher les " + n + " premiers éléments :");
+        Maillon courant = this.tete;
+        int compteur = 0;
+        while (courant != null && compteur < n) {
+            System.out.println(courant.mot);
+            courant = courant.suiv;
+            compteur++;
+        }
+    }
+
+    /**
+     * Supprime le maillon contenant le mot spécifié de la liste.
+     * @param mot Le caractère représentant le mot à supprimer.
+     */
+    void supprimer(char mot) {
+        Maillon prec = null;
+        Maillon courant = this.tete;
+        while (courant != null) {
+            if (courant.mot == mot) {
+                if (prec == null) {
+                    this.tete = courant.suiv;
+                } else {
+                    prec.suiv = courant.suiv;
+                }
+                break; // On a trouvé et supprimé le mot, donc on arrête la recherche
+            }
+            prec = courant;
+            courant = courant.suiv;
+        }
     }
 }
+
